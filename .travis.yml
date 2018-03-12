@@ -2,7 +2,7 @@ language: node_js
 node_js: node
 deploy:
   provider: heroku
-  api_key:
+  api_key: 
     secure: <YOUR ENCRYPTED KEY HERE>
   app: motivATR
   on:
