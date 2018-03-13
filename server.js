@@ -14,24 +14,6 @@ app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(bodyParser.json());
 
-const FitbitStrategy = require( 'passport-fitbit-oauth2' ).FitbitOAuth2Strategy;;
- 
-passport.use(new FitbitStrategy({
-    clientID:     FITBIT_CLIENT_ID,
-    clientSecret: FITBIT_CLIENT_SECRET,
-    callbackURL: "https://motivatr1.herokuapp.com/"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    User.findOrCreate({ fitbitId: profile.id }, function (err, user) {
-      return done(err, user);
-    });
-  }
-));
-
-
-
-
-
 app.use('*', function (req, res) {
     res.status(404).json({message: 'Not Found'})
 });
