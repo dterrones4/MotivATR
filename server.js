@@ -24,37 +24,38 @@ app.use('*', function (req, res) {
 let server;
 
 //this function connect to our db, then starts the server
-function runServer(databaseUrl, port = PORT){
+function runServer(databaseUrl, port = PORT) {
     return new Promise((resolve, reject) => {
-        mongoose.connect(databaseUrl, err => {
-            if (err) {
-                return reject(err);
-            }
-            server = app.listenerCount(port, () => {
-                console.log(`Your app is listening on port ${port}`);
-                resolve();
-            })
-            .on('error', err => {
-                mongoose.disconnect();
-                reject(err);
-            });
-        });
+      mongoose.connect(databaseUrl, err => {
+        if (err) {
+          return reject(err);
+        }
+        server = app.listen(port, () => {
+          console.log(`Your app is listening on port ${port}`);
+          resolve();
+        })
+          .on('error', err => {
+            mongoose.disconnect();
+            reject(err);
+          });
+      });
     });
-}
+  }
+  
 
-function closeServer() {
+  function closeServer() {
     return mongoose.disconnect().then(() => {
-        return new Promise((resolve, reject) => {
-            console.log('Closing server');
-            server.close(err => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve();
-            });
+      return new Promise((resolve, reject) => {
+        console.log('Closing server');
+        server.close(err => {
+          if (err) {
+            return reject(err);
+          }
+          resolve();
         });
+      });
     });
-}
+  }
 
 // if server.js is called directly (aka, with `node server.js`), this block
 // runs. but we also export the runServer command so other code (for instance, test code) can start the server as needed.
