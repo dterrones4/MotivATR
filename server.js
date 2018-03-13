@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 
 app.use('*', function (req, res) {
-    res.status(404).json({message: 'Not Found'};)
+    res.status(404).json({message: 'Not Found'})
 });
 
 // closeServer needs access to a server object, but that only
