@@ -11,6 +11,7 @@ const {User} = require('./models');
 
 const app = express();
 app.use(express.static('public'));
+
 app.use(morgan('common'));
 app.use(bodyParser.json());
 
@@ -43,7 +44,7 @@ function runServer(databaseUrl, port = PORT) {
   }
   
 
-  function closeServer() {
+function closeServer() {
     return mongoose.disconnect().then(() => {
       return new Promise((resolve, reject) => {
         console.log('Closing server');
@@ -63,4 +64,4 @@ if (require.main === module) {
     runServer(DATABASE_URL).catch(err => console.error(err));
 }
 
-module.exports = {app, runServer, closeServer};
+module.exports =  {runServer, app, closeServer};

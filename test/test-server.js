@@ -3,7 +3,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
-const app = require('../server.js');
+const {app, runServer, closeServer} = require('../server.js');
 
 const expect = chai.expect;
 
