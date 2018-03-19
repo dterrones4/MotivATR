@@ -1,23 +1,32 @@
 'use strict';
 
-const bodyParser = require('body-parser')
+const http = require('http');
+const path = require('path');
+const methods = require('methods');
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const errorhandler = require('errorhandler');
+const session = require('express-session');
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const {DATABASE_URL, PORT} = require('./config');
-const {User} = require('./models');
+const {DATABASE_URL, PORT} = require('./config/index');
 
 const app = express();
-app.use(express.static('public'));
 
 app.use(morgan('common'));
+app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
-app.use('*', function (req, res) {
-    res.status(404).json({message: 'Not Found'})
-});
+app.use(require('method-override')());
+app.use(express.static(__dirname + 'public'));
+app.use(session({ secret: 'conduit', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false  }));
+
+require('./models');
+require('./config/passport');
+app.use(require('./routes'));
 
 // closeServer needs access to a server object, but that only
 // gets created when `runServer` runs, so we declare `server` here
