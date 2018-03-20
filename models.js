@@ -9,10 +9,10 @@ mongoose.Promise = global.Promise;
 
 const userSchema = new mongoose.Schema({
     username: {type: String, unique: true, lowercase: true, required: [true, "can't be blank"], match: [/^[a-zA-ZA0-9]+$/, 'is invalid'], index: true},
-    email: {type: String, unique: true, lowercase: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true},
+    email: {type: String, unique: true, lowercase: true, required: [true, "can't be blank"], index: true}, //match: [/\S+@\S+\.\S+/, 'is invalid']
     password: {type: String, require: true},
-    //phoneNumber: {type: Number, unique: true, required: true},
-    motivatrPhoneNumber: Number,
+    phoneNumber: {type: String, unique: true, required: true},
+    motivatrPhoneNumber: String,
     fb_auth_token: String,
     fb_refresh_token: String,
     hash: String,

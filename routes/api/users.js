@@ -7,10 +7,10 @@ const auth = require('../auth');
 router.post('/users', function(req, res, next){
     let user = new UserAccount();
 
-    user.username = req.body.user.username;
-    user.email = req.body.user.email;
-    user.phoneNumber = req.body.user.phoneNumber;
-    user.setPassword(req.body.user.password);
+    user.username = req.body.username;
+    user.email = req.body.email;
+    user.phoneNumber = req.body.phoneNumber;
+    user.setPassword(req.body.password);
 
     user.save().then(function(){
         return res.json({user: user.serialize()});
