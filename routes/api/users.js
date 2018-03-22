@@ -3,6 +3,10 @@ const router = require('express').Router();
 const passport = require('passport');
 const UserAccount = mongoose.model('UserAccount')
 const auth = require('../auth');
+const path = require('path');
+
+
+const FITBIT_CODE_URL = 'https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22CV92&redirect_uri=https%3A%2F%2Fmotivatr1.herokuapp.com%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800';
 
 router.post('/users', function(req, res, next){
     let user = new UserAccount();
@@ -18,11 +22,11 @@ router.post('/users', function(req, res, next){
 });
 
 router.post('/users/login', function(req, res, next){
-    if(!req.body.user.email){
+    if(!req.body.email){
         return res.status(422).json({errors: {email: "can't be blank"}});
     }
 
-    if(!req.body.user.password){
+    if(!req.body.password){
         return res.status(422).json({error: {password: "can't be blank"}});
     }
 
@@ -31,11 +35,12 @@ router.post('/users/login', function(req, res, next){
 
         if(user){
             user.token = user.generateJWT();
-            return res.json({user: user.serialize()});
+            return res.json({user: user.serialize()});  //.redirect('/api/user').sendFile('dashboard.html', {root: './public'});;
         } else {
             return res.status(422).json(info);
         }
-    })(req, res, next);
+    })
+    (req, res, next);
 });
 
 router.get('/user', auth.required, function(req, res, next){

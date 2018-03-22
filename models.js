@@ -9,14 +9,15 @@ mongoose.Promise = global.Promise;
 
 const userSchema = new mongoose.Schema({
     username: {type: String, unique: true, lowercase: true, required: [true, "can't be blank"], match: [/^[a-zA-ZA0-9]+$/, 'is invalid'], index: true},
-    email: {type: String, unique: true, lowercase: true, required: [true, "can't be blank"], index: true}, //match: [/\S+@\S+\.\S+/, 'is invalid']
+    email: {type: String, unique: true, lowercase: true, required: [true, "can't be blank"], index: true},
     password: {type: String, require: true},
     phoneNumber: {type: String, unique: true, required: true},
     motivatrPhoneNumber: String,
     fb_auth_token: String,
     fb_refresh_token: String,
     hash: String,
-    salt: String
+    salt: String,
+    token: String
 }, {timestamps: true});
 
 userSchema.plugin(uniqueValidator, {message: 'is already taken.'});
