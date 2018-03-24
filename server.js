@@ -21,9 +21,9 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
 app.use(require('method-override')());
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 app.get('/', function(req, res){
-  res.sendFile('index.html', {root: __dirname});
+  res.sendFile(__dirname + '/views/index.html');
 })
 app.use(session({ secret: 'conduit', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false  }));
 
@@ -37,7 +37,7 @@ app.use(require('./routes'));
 let server;
 
 //this function connect to our db, then starts the server
-function runServer(databaseUrl, port = PORT) {
+function runServer(databaseUrl = DATABASE_URL, port = PORT) {
     return new Promise((resolve, reject) => {
       mongoose.connect(databaseUrl, err => {
         if (err) {
@@ -55,7 +55,6 @@ function runServer(databaseUrl, port = PORT) {
     });
   }
   
-
 function closeServer() {
     return mongoose.disconnect().then(() => {
       return new Promise((resolve, reject) => {
@@ -73,7 +72,7 @@ function closeServer() {
 // if server.js is called directly (aka, with `node server.js`), this block
 // runs. but we also export the runServer command so other code (for instance, test code) can start the server as needed.
 if (require.main === module) {
-    runServer(DATABASE_URL).catch(err => console.error(err));
+    runServer().catch(err => console.error(err));
 }
 
 module.exports =  {runServer, app, closeServer};

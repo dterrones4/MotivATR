@@ -35,7 +35,7 @@ router.post('/users/login', function(req, res, next){
 
         if(user){
             user.token = user.generateJWT();
-            return res.json({user: user.serialize()});  //.redirect('/api/user').sendFile('dashboard.html', {root: './public'});;
+            return res.json({user: user.serialize(), redirect: '/api/user/fitbitAuth'}); //res.send({redirect: '../user/home'});
         } else {
             return res.status(422).json(info);
         }
@@ -43,7 +43,15 @@ router.post('/users/login', function(req, res, next){
     (req, res, next);
 });
 
-router.get('/user', auth.required, function(req, res, next){
+router.get('/user/fitbitAuth', /*auth.required,*/ function(req, res, next){
+    //UserAccount.findById(req.payload.id).then(function(user){
+        //if(!user){return res.sendStatus(401);}
+
+        return res.sendFile('dashboard.html', {root: './views'});
+    });
+//});
+
+router.get('/user', /*auth.required,*/ function(req, res, next){
     UserAccount.findById(req.payload.id).then(function(user){
         if(!user){return res.sendStatus(401);}
 
@@ -51,7 +59,7 @@ router.get('/user', auth.required, function(req, res, next){
     }).catch(next);
 });
 
-router.put('/user', auth.required, function(req, res, next){
+router.put('/user', /*auth.required,*/ function(req, res, next){
     UserAccount.findById(req.payload.id).then(function(user){
         if(!user){ return res.sendStatus(401); }
 

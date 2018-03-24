@@ -46,10 +46,10 @@ userSchema.methods.generateJWT = function() {
 
 userSchema.methods.serialize = function(){
     return {
+        id:this._id,
         username: this.username,
         email: this.email,
         phoneNumber: this.phoneNumber,
-        motivatrPhoneNumber: this.motivatrPhoneNumber,
         token: this.generateJWT()
     };
 };

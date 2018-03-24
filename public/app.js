@@ -3,7 +3,7 @@ getUrlParams();
 handleLoginSubmit();
 
 const FITBIT_CODE_URL = 'https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22CV92&redirect_uri=https%3A%2F%2Fmotivatr1.herokuapp.com%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=8645000';
-const FITBIT_AUTH_URL = 'https://api.fitbit.com/oauth2/token'
+const FITBIT_AUTH_URL = 'https://api.fitbit.com/oauth2/token';
 
 $('.btn').on('click', function () {
     $('.form').addClass('form--no');
@@ -45,8 +45,23 @@ function handleLoginSubmit(){
             email: document.getElementById("loginEmail").value,
             password: document.getElementById('loginPassword').value
         }
-        $.post("/api/users/login", data);
+        $.post("/api/users/login", data).done(res => {
+            if(res.user.token){
+                console.log(res);
+                localStorage.setItem('token', res.user.token);
+                //loginRedirect(res);
+            }
+            if(res.redirect){
+                document.location.href = res.redirect;
+            }
+        }); //if response has redirect object then redirec to provided endpoint.    
     });
+}
+
+function loginRedirect(res){
+    if(res.redirect){
+        document.location.href = res.redirect;
+    }
 }
 
 function newUserPostRequest(data){
@@ -56,7 +71,7 @@ function newUserPostRequest(data){
 function getUrlParams(url){
     $('#UrlParams').on('click', function(event){
         // get query string from url (optional) or window
-        let queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+        let queryString = url ? url.split('?')[1] : window.location.search.slice(1); //req.query
 
         // we'll store the parameters here
         let obj = {};
