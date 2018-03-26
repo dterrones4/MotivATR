@@ -5,8 +5,7 @@ const UserAccount = mongoose.model('UserAccount')
 const auth = require('../auth');
 const path = require('path');
 
-
-const FITBIT_CODE_URL = 'https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22CV92&redirect_uri=https%3A%2F%2Fmotivatr1.herokuapp.com%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800';
+const FITBIT_CODE_URL = 'https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22CV92&redirect_uri=https%3A%2F%2Fmotivatr1.herokuapp.com%2Fapi%2Fuser%2Fhome&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800';
 
 router.post('/users', function(req, res, next){
     let user = new UserAccount();
@@ -50,6 +49,11 @@ router.get('/user/fitbitAuth', /*auth.required,*/ function(req, res, next){
         return res.sendFile('dashboard.html', {root: './views'});
     });
 //});
+
+router.get('/user/home', function (req, res, next){
+    let code = req.query.code;
+    console.log(code);
+})
 
 router.get('/user', /*auth.required,*/ function(req, res, next){
     UserAccount.findById(req.payload.id).then(function(user){

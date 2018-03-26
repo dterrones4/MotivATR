@@ -2,7 +2,7 @@ handleRegistrationSubmit();
 getUrlParams();
 handleLoginSubmit();
 
-const FITBIT_CODE_URL = 'https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22CV92&redirect_uri=https%3A%2F%2Fmotivatr1.herokuapp.com%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=8645000';
+const FITBIT_CODE_URL = 'https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22CV92&redirect_uri=https%3A%2F%2Fmotivatr1.herokuapp.com%2Fapi%2Fuser%2Fhome&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800';
 const FITBIT_AUTH_URL = 'https://api.fitbit.com/oauth2/token';
 
 $('.btn').on('click', function () {
@@ -49,19 +49,13 @@ function handleLoginSubmit(){
             if(res.user.token){
                 console.log(res);
                 localStorage.setItem('token', res.user.token);
-                //loginRedirect(res);
             }
+            //if response has a redirect object redirect to that page
             if(res.redirect){
                 document.location.href = res.redirect;
             }
-        }); //if response has redirect object then redirec to provided endpoint.    
+        }); 
     });
-}
-
-function loginRedirect(res){
-    if(res.redirect){
-        document.location.href = res.redirect;
-    }
 }
 
 function newUserPostRequest(data){
@@ -135,7 +129,7 @@ function fitbitAuthRequest(obj){
     const request = {
         clientId: '22CV92',
         grant_type: 'authorization_code',
-        redirect_uri: 'https://motivatr1.herokuapp.com/',
+        redirect_uri: 'https://motivatr1.herokuapp.com/api/user/home',
         code: obj.code
     }
     const headers = {
