@@ -52,7 +52,7 @@ router.get('/user/fitbitAuth', /*auth.required,*/ function(req, res, next){
 
 router.get('/user/home', function (req, res, next){
     let code = req.query.code;
-    console.log(code);
+    res.json('code');
 })
 
 router.get('/user', /*auth.required,*/ function(req, res, next){
