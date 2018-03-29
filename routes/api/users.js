@@ -4,8 +4,8 @@ const passport = require('passport');
 const UserAccount = mongoose.model('UserAccount')
 const auth = require('../auth');
 const path = require('path');
-
-const FITBIT_CODE_URL = 'https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22CV92&redirect_uri=https%3A%2F%2Fmotivatr1.herokuapp.com%2Fapi%2Fuser%2Fhome&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800';
+const https = require('https');
+const querystring = require('querystring')
 
 router.post('/users', function(req, res, next){
     let user = new UserAccount();
@@ -34,7 +34,7 @@ router.post('/users/login', function(req, res, next){
 
         if(user){
             user.token = user.generateJWT();
-            return res.json({user: user.serialize(), redirect: '/api/user/fitbitAuth'}); //res.send({redirect: '../user/home'});
+            return res.json({user: user.serialize(), redirect: '/api/user/fitbitAuth'}); 
         } else {
             return res.status(422).json(info);
         }
@@ -46,14 +46,70 @@ router.get('/user/fitbitAuth', /*auth.required,*/ function(req, res, next){
     //UserAccount.findById(req.payload.id).then(function(user){
         //if(!user){return res.sendStatus(401);}
 
-        return res.sendFile('dashboard.html', {root: './views'});
+        return res.sendFile('fitbitAuth.html', {root: './views'});
     });
 //});
 
-router.get('/user/home', function (req, res, next){
-    let code = req.query.code;
-    res.json('code');
-})
+router.post('/user/fitbitAuthToken', function (req, res, next){
+    let code = req.body.code;
+    let fbTokens = '';
+
+    const options = {
+        hostname: 'api.fitbit.com',
+        method: 'POST',
+        path: '/oauth2/token',
+        headers: {"Authorization": "Basic MjJDVjkyOjQ5MWZkZTI3MzgzMDZjMTUxOTU0NzVkMzI0Yzg3ZTU1",
+        "Content-Type": "application/x-www-form-urlencoded"}
+    };
+    const query = querystring.stringify({
+        clientId: '22CV92',
+        grant_type: 'authorization_code',
+        redirect_uri: 'http://localhost:8080/api/user/home',
+        code: code
+    });
+
+    const request = https.request(options, (response) => {
+        response.on('data', (chunk) => {
+            fbTokens += chunk;
+        });
+
+        response.on('end' , () => {
+            return new Promise((resolve, reject) => {
+                UserAccount.findById(req.body.id)
+                .then(user =>{
+                    if(!user){
+                        return res.sendStatus(404);
+                    }
+                    resolve(user);    
+                }).catch(err => {reject(err)})
+            })
+            .then(function(user){
+                fbTokens = (JSON.parse(fbTokens));
+
+                user.fb_auth_token = fbTokens.access_token;
+                user.fb_refresh_token = fbTokens.refresh_token;
+                user.fb_id = fbTokens.user_id;
+
+                user.save().then(function(err){
+                    if(err){return res.sendStatus(404)}
+                });
+            });
+        });
+
+        response.on('error', (err) => {
+            console.log("Error:" + err.message);
+        });
+    });
+    request.write(query);
+    request.end()
+});
+
+
+router.get('/user/home', function(req, res, next){
+    if(req.query.code){
+        return res.sendFile('fitbitAuthToken.html', {root: './views'})
+    }
+});
 
 router.get('/user', /*auth.required,*/ function(req, res, next){
     UserAccount.findById(req.payload.id).then(function(user){
@@ -78,7 +134,7 @@ router.put('/user', /*auth.required,*/ function(req, res, next){
             user.phoneNumber = req.body.user.phoneNumber;
         }
         if(typeof req.body.user.password !== 'undefined'){
-            user.serPassword(req.body.user.password);
+            user.setPassword(req.body.user.password);
         }
         if(typeof req.body.user.motivatrPhoneNumber !== 'undefined'){
             user.motivatrPhoneNumber = req.body.user.motivatrPhoneNumber;

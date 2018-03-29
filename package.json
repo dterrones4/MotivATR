@@ -31,8 +31,10 @@
     "passport-fitbit-oauth2": "^1.0.2",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "querystring": "^0.2.0",
     "routes": "^2.1.0",
-    "session": "^0.1.0"
+    "session": "^0.1.0",
+    "taucharts": "^2.1.0"
   },
   "keywords": [
     "node",

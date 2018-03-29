@@ -5,6 +5,10 @@ function getTokenFromHeader(req){
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token'){
         return req.headers.authorization.split(' ')[1];
     }
+    else{
+        let token = req.body.token || req.query.token;
+        return token;
+    }
     return null;
 }
 

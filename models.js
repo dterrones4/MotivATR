@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
     motivatrPhoneNumber: String,
     fb_auth_token: String,
     fb_refresh_token: String,
+    fb_id: String,
     hash: String,
     salt: String,
     token: String
