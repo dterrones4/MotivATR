@@ -1,5 +1,6 @@
 *{
     box-sizing:border-box;
+    font-family: 'Merriweather', serif;
 }
 
 .center{
@@ -17,11 +18,13 @@ body {
     animation: move 10s ease infinite;
     transform: translate3d(0, 0, 0);
     background: linear-gradient(45deg, #49D49D 10%, #A2C7E5 90%);
-    height: 100vh
+    height: 100vh;
 }
 
 h1{
-    font-size:36px;
+    font-size:40px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
 }
 
 .input{
@@ -55,13 +58,18 @@ h1{
 
 .btn{
     display: block;
-    width: 100%;
+    width: 100%; 
+    max-width: 400px;
+    margin: auto;
     padding: 20px;
     -webkit-appearance: none;
     outline: 0;
     border: 0;
-    color: white;
+    border-radius: 3px;
+    color: rgb(0, 0, 0);
     transition: 0.3s;
+    font-size: 16px; 
+    font-weight: bold; 
 }
 
 @keyframes NO {
@@ -106,3 +114,24 @@ h1{
           background-position: 0 0
       }
   }
+
+#myChart{
+
+}
+
+.sidenav {
+    height: 100%;
+    width: 100%; /* Set the width of the sidebar */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: rgb(104, 104, 104); /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+canvas{
+    border: solid black 1px;
+}

@@ -1,8 +1,8 @@
 handleRegistrationSubmit();
 getUrlParams();
 handleLoginSubmit();
+displayGraph();
 
-const FITBIT_CODE_URL = 'https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22CV92&redirect_uri=https%3A%2F%2Fmotivatr1.herokuapp.com%2Fapi%2Fuser%2Fhome&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800';
 const FITBIT_AUTH_URL = 'https://api.fitbit.com/oauth2/token';
 
 $('.btn').on('click', function () {
@@ -47,8 +47,8 @@ function handleLoginSubmit(){
         }
         $.post("/api/users/login", data).done(res => {
             if(res.user.token){
-                console.log(res);
                 localStorage.setItem('token', res.user.token);
+                localStorage.setItem('id', res.user.id);
             }
             //if response has a redirect object redirect to that page
             if(res.redirect){
@@ -120,8 +120,14 @@ function getUrlParams(url){
             }
             }
         }
-    console.log(obj);
-    fitbitAuthRequest(obj)
+    const data = {
+        code: obj.code,
+        token: localStorage.getItem('token'),
+        id: localStorage.getItem('id')
+    };
+    console.log(data);
+    
+    $.post('/api/user/fitbitAuthToken', data)
     });
 };
 
@@ -129,7 +135,7 @@ function fitbitAuthRequest(obj){
     const request = {
         clientId: '22CV92',
         grant_type: 'authorization_code',
-        redirect_uri: 'https://motivatr1.herokuapp.com/api/user/home',
+        redirect_uri: 'localhost:8080/api/user/home',
         code: obj.code
     }
     const headers = {
@@ -154,3 +160,57 @@ function fitbitAuthRequest(obj){
         //dataType: 'json', 
     //}).done(data => console.log(data));
 //}
+
+
+///TAUCHARTS////////
+
+const testData = {
+    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    datasets: [{
+        label: 'Steps Taken Per Day',
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+        data: [9000, 8700, 10000, 12000, 9375, 8123, 7243]
+    }]   
+};
+
+//chartjs.org for documentation
+function displayGraph(){
+    $('#barGraph').on('click', function(event){
+        $('#graphs').removeClass('hidden');
+        Chart.defaults.global.defaultFontFamily = 'Merriweather', 'serif';
+        var ctx = document.getElementById('barChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'bar',
+            
+            // The data for our dataset
+            data: testData,
+            
+            // Configuration options go here
+            options: {}
+        });
+        var ctx2 = document.getElementById('doughnutChart').getContext('2d');
+        var chart2 = new Chart(ctx2, {
+            // The type of chart we want to create
+            type: 'pie',
+            
+            // The data for our dataset
+            data: {
+                labels: ["Out of Range(30-94bpm)", "Fat Burn(94-134bpm)", "Cardio(131-159bpm)", "Peak(159-220bpm)"],
+                datasets: [
+                  {
+                    label: "Hear Rate Breakdown (minutes)",
+                    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9"],
+                    data: [200,156,60,15]
+                  }
+                ]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'Heart Rate Breakdown',
+                }
+              }
+        });
+    });
+};	

@@ -3,7 +3,9 @@
 
 <head>
 	<title>MotivATR</title>
-	<link rel="stylesheet" href="main.css">
+	<link href="https://fonts.googleapis.com/css?family=Merriweather|Montserrat" rel="stylesheet">
+	<link rel="stylesheet" href="main.css" type='text/css'>
+	<link rel='stylesheet' href='float-grid.css' type='text/css'>
 </head>
 
 <header><h1 class='center'>MotivATR</h1></header>
@@ -21,13 +23,21 @@
 			<input type = 'password' id='loginPassword' placeholder ='Password' class='input' required>
 			<button class='btn'>Submit</button><br>
 	</form>
-	<button id=login>Login</button>
-	<button id=register>Sign Up</button>
-	<button id='UrlParams'>Store URL Params</button>
+
+	<div class = 'sidenav col-4'>
+		<button id='login' class='btn'>Login</button><br>
+		<button id='register' class='btn'>Sign Up</button><br>
+		<button id = 'barGraph' class='btn'>Graphs</button>
+	</div>
+	<div id ='graphs' class ='col-8 hidden'>
+		<canvas id="barChart"></canvas>
+		<canvas id="doughnutChart"></canvas>
+	</div>
 	<script
 	src="https://code.jquery.com/jquery-3.2.1.min.js"
 	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 	crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script src="app.js"></script>
 </body>
 
