@@ -10,10 +10,14 @@
 <header><h1 class='center'>MotivATR</h1></header>
 <body>
 	<main role='main'>
-		<div class='row'>
-            <button id = 'barGraph'>Bar Graph</button>
-			<div id='graphs' class = 'col-8'></div>
-			<div class = 'col-4'></div>
+		<div class = 'sidenav col-4'>
+			<button id='login' class='btn'>Login</button><br>
+			<button id='register' class='btn'>Sign Up</button><br>
+			<button id = 'barGraph' class='btn'>Graphs</button>
+		</div>
+		<div id ='graphs' class ='col-8 hidden'>
+			<canvas id="barChart"></canvas>
+			<canvas id="doughnutChart"></canvas>
 		</div>
 	</main>
 	<script

@@ -64,7 +64,7 @@ router.post('/user/fitbitAuthToken', function (req, res, next){
     const query = querystring.stringify({
         clientId: '22CV92',
         grant_type: 'authorization_code',
-        redirect_uri: 'http://localhost:8080/api/user/home',
+        redirect_uri: 'http://localhost:8080/api/user/fitbitAuthToken',
         code: code
     });
 
@@ -90,10 +90,11 @@ router.post('/user/fitbitAuthToken', function (req, res, next){
                 user.fb_refresh_token = fbTokens.refresh_token;
                 user.fb_id = fbTokens.user_id;
 
-                user.save().then(function(err){
-                    if(err){return res.sendStatus(404)}
-                });
-            });
+                user.save()
+            })
+            .then(function(){
+            return res.json({redirect: '/api/user/home'});
+            }).catch(err => {reject(err)});
         });
 
         response.on('error', (err) => {
@@ -104,12 +105,19 @@ router.post('/user/fitbitAuthToken', function (req, res, next){
     request.end()
 });
 
+router.get('/user/fitbitAuthToken', function(req, res, next){
+    return res.sendFile('fitbitAuthToken.html', {root: './views'});
+});
+
 
 router.get('/user/home', function(req, res, next){
-    if(req.query.code){
-        return res.sendFile('fitbitAuthToken.html', {root: './views'})
-    }
+    return res.sendFile('home.html', {root: './views'});
 });
+
+router.post('user/home', function(req, res, next){
+    //find user by ID and then take AUTH tokens to retrieve FitBit Data
+    //respond with user data to be displayed on front end.
+})
 
 router.get('/user', /*auth.required,*/ function(req, res, next){
     UserAccount.findById(req.payload.id).then(function(user){

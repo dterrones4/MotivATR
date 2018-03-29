@@ -127,7 +127,11 @@ function getUrlParams(url){
     };
     console.log(data);
     
-    $.post('/api/user/fitbitAuthToken', data)
+    $.post('/api/user/fitbitAuthToken', data).done(res => {
+        if(res.redirect){
+            document.location.href = res.redirect;
+            }
+        });
     });
 };
 
