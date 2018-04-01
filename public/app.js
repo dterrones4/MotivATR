@@ -1,7 +1,7 @@
 handleRegistrationSubmit();
 getUrlParams();
 handleLoginSubmit();
-displayGraph();
+listenForFitbitCalls();
 
 const FITBIT_AUTH_URL = 'https://api.fitbit.com/oauth2/token';
 
@@ -125,7 +125,6 @@ function getUrlParams(url){
         token: localStorage.getItem('token'),
         id: localStorage.getItem('id')
     };
-    console.log(data);
     
     $.post('/api/user/fitbitAuthToken', data).done(res => {
         if(res.redirect){
@@ -154,67 +153,229 @@ function fitbitAuthRequest(obj){
     }).done(data => console.log(data));
 };
 
-//const fitbit_steps_endpoint = `https://api.fitbit.com/1/user/-/activities/steps/date/today/1d.json`
-//function getFitBitSteps(callback){
-  //  console.log(MOCK_USER.auth_token);
-    //$.ajax({
-      //  url: fitbit_steps_endpoint,
-        //headers: {Authorization: `Bearer ${MOCK_USER.auth_token}`},
-        //type: 'GET',
-        //dataType: 'json', 
-    //}).done(data => console.log(data));
-//}
+function listenForFitbitCalls(){
+    getFitbitHearRateData();
+    getFitBitCurrentGoalsStatus();
+    getFitbitActivityData();
+}
 
+function getFitbitActivityData(){
+    $('#barGraph').on('click', function(event){
 
-///TAUCHARTS////////
+        const data = {
+            id: localStorage.getItem('id')
+        }
 
-const testData = {
-    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    datasets: [{
-        label: 'Steps Taken Per Day',
-        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-        data: [9000, 8700, 10000, 12000, 9375, 8123, 7243]
-    }]   
+        $.post("/api/user/home", data).done(res => {
+            console.log(res);
+            const activityData = {
+                distance: res.summary.distances[0].distance,
+                elevation: res.summary.elevation,
+                floors: res.summary.floors,
+                steps: res.summary.steps,
+                calories: res.summary.caloriesOut        
+            }
+            const goalsData = {
+                activeMinutes: res.goals.activeMinutes,
+                calories: res.goals.caloriesOut,
+                distance: res.goals.distance,
+                floors: res.goals.floors,
+                steps: res.goals.steps
+            }
+            populateBarGraph(activityData);
+            updateUserGoals(goalsData);
+
+        });
+    });      
 };
 
+function getFitbitHearRateData(){
+    $('#heartRate').on('click', function(event){
+
+        const data = {
+            id: localStorage.getItem('id')
+        }
+
+        $.post("/api/user/home", data).done(res => {
+            const goalsData = {
+                activeMinutes: res.goals.activeMinutes,
+                calories: res.goals.caloriesOut,
+                distance: res.goals.distance,
+                floors: res.goals.floors,
+                steps: res.goals.steps
+            }
+            const activeMinutesData = {
+                sendentaryMinutes: res.summary.sedentaryMinutes,
+                lightlyActiveMinutes: res.summary.lightlyActiveMinutes,
+                fairlyActiveMinutes: res.summary.fairlyActiveMinutes,
+                veryActiveMinutes: res.summary.veryActiveMinutes
+            }
+            populatePieGraph(activeMinutesData);
+            updateUserGoals(goalsData);
+        });
+    });      
+};
+
+function getFitBitCurrentGoalsStatus(){
+    $('#currentGoals').on('click', function(event){
+        const data = {
+            id: localStorage.getItem('id')
+        }
+
+        $.post("/api/user/home", data).done(res => {
+            const goalsData = {
+                activeMinutes: res.goals.activeMinutes,
+                calories: res.goals.caloriesOut,
+                distance: res.goals.distance,
+                floors: res.goals.floors,
+                steps: res.goals.steps
+            }
+            const activityData = {
+                distance: res.summary.distances[0].distance,
+                elevation: res.summary.elevation,
+                floors: res.summary.floors,
+                steps: res.summary.steps,
+                calories: res.summary.caloriesOut        
+            }
+            populateGoalsStatusGraph(goalsData, activityData);
+            updateUserGoals(goalsData);
+        });
+    });      
+};
+
+
+///CHARTS.JS////////
 //chartjs.org for documentation
-function displayGraph(){
-    $('#barGraph').on('click', function(event){
-        $('#graphs').removeClass('hidden');
-        Chart.defaults.global.defaultFontFamily = 'Merriweather', 'serif';
-        var ctx = document.getElementById('barChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'bar',
-            
-            // The data for our dataset
-            data: testData,
-            
-            // Configuration options go here
-            options: {}
-        });
-        var ctx2 = document.getElementById('doughnutChart').getContext('2d');
-        var chart2 = new Chart(ctx2, {
-            // The type of chart we want to create
-            type: 'pie',
-            
-            // The data for our dataset
-            data: {
-                labels: ["Out of Range(30-94bpm)", "Fat Burn(94-134bpm)", "Cardio(131-159bpm)", "Peak(159-220bpm)"],
-                datasets: [
-                  {
-                    label: "Hear Rate Breakdown (minutes)",
-                    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9"],
-                    data: [200,156,60,15]
-                  }
-                ]
-              },
-              options: {
-                title: {
-                  display: true,
-                  text: 'Heart Rate Breakdown',
-                }
-              }
-        });
+function populateBarGraph(data){
+    $('#graphs').removeClass('hidden');
+    $('#graphContainer').remove();
+    $('#graphs').append('<canvas id="graphContainer"></canvas>');
+
+    var ctx = document.getElementById('graphContainer').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+        
+        // The data for our dataset
+        data:{
+            labels: ['elevation', 'floors', 'steps', 'calories'],
+            datasets: [{
+                label: 'Todays Progress',
+                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                data: [data.elevation, data.floors, data.steps, data.calories]
+            }]   
+        },
+        
+        // Configuration options go here
+        options: {           
+            responsive:true,
+            maintainAspectRatio: false
+        }
     });
-};	
+}
+
+function populatePieGraph(data){
+    $('#graphs').removeClass('hidden');
+    $('#graphContainer').remove();
+    $('#graphs').append('<canvas id="graphContainer"></canvas>');
+
+    var ctx = document.getElementById('graphContainer').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'pie',
+        
+        // The data for our dataset
+        data: {
+            labels: ["Out of Range(30-94bpm)", "Fat Burn(94-134bpm)", "Cardio(131-159bpm)", "Peak(159-220bpm)"],
+            datasets: [
+              {
+                label: "Activity Breakdown(minutes)",
+                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9"],
+                data: [data.sendentaryMinutes, data.lightlyActiveMinutes,
+                    data.fairlyActiveMinutes, data.veryActiveMinutes]
+              }
+            ]
+          },
+          options: {
+            responsive:true,
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: 'Heart Rate Breakdown (minutes)',
+            }
+          }
+    });
+}
+
+function populateGoalsStatusGraph(goals, progress){
+    $('#graphs').removeClass('hidden');
+    $('#graphContainer').remove();
+    $('#graphs').append('<canvas id="graphContainer"></canvas>');
+
+    var ctx = document.getElementById('graphContainer').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'horizontalBar',
+        
+        // The data for our dataset
+        data: {
+            labels: ["Active Minutes", "Calories", "Distance", "Floors", 'Steps'],
+            datasets: [
+              {
+                label: ["Daily Goals"],
+                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9", "#c45850"],
+                data: [goals.activeMinutes, goals.calories, goals.distance, goals.floors, goals.steps]
+              },
+              {
+                  label: ["Current Progress"],
+                  backgroundColor: [],
+                  data: [progress.activeMinutes, progress.calories, progress.distance, progress.floors, progress.steps]
+              }
+            ]
+          },
+          options: {
+            responsive:true,
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: 'Current Goals Completion Status',
+            },
+            scales: {
+                xAxes: [{ stacked: true }],
+                yAxes: [{ stacked: true }]
+            }
+          }
+    });
+
+}
+
+function updateUserGoals(data){
+    $("ul").empty();
+    const ul = document.getElementById('goalsList');
+
+    if(data.steps){
+        let li = document.createElement('li');
+        li.appendChild(document.createTextNode(`Steps: ${data.steps}`));
+        ul.appendChild(li);
+    }
+    if(data.calories){
+        let li2 = document.createElement('li');
+        li2.appendChild(document.createTextNode(`Calories: ${data.calories}`));
+        ul.appendChild(li2);
+    }
+    if(data.activeMinutes){
+        let li3 = document.createElement('li');
+        li3.appendChild(document.createTextNode(`Active Minutes: ${data.activeMinutes}`));
+        ul.appendChild(li3);
+    }
+    if(data.distance){
+        let li4 = document.createElement('li');
+        li4.appendChild(document.createTextNode(`Distance: ${data.distance}`));
+        ul.appendChild(li4);
+    }
+    if(data.floors){
+        let li5 = document.createElement('li');
+        li5.appendChild(document.createTextNode(`Floors: ${data.floors}`));
+        ul.appendChild(li5);
+    }
+}

@@ -9,16 +9,25 @@
 
 <header><h1 class='center'>MotivATR</h1></header>
 <body>
+	<a href='#'>Logout</a>
 	<main role='main'>
+	  <div clas='row'>
 		<div class = 'sidenav col-4'>
-			<button id='login' class='btn'>Login</button><br>
-			<button id='register' class='btn'>Sign Up</button><br>
-			<button id = 'barGraph' class='btn'>Graphs</button>
+		  <button id = 'barGraph' class='btn'>View Todays Activity</button><br>
+		  <button id = 'heartRate' class='btn'>View Todays Heart Rate Breakdown</button><br>
+		  <button id = 'currentGoals' class='btn'>View Todays Goal Progress</button><br>
+		  <button id = '' class='btn'>Set Goal End Time</button><br>
+		  <button id = '' class='btn'>Sign Up MotivATR</button>
+		  <div class = 'userGoals'>
+			<h3 class ='center'>Goals</h3>
+			<ul id='goalsList'>
+			</ul>
+		  </div>
 		</div>
 		<div id ='graphs' class ='col-8 hidden'>
-			<canvas id="barChart"></canvas>
-			<canvas id="doughnutChart"></canvas>
+		  <canvas id="graphContainer" class='hidden'></canvas>
 		</div>
+	  </div> 
 	</main>
 	<script
 	src="https://code.jquery.com/jquery-3.2.1.min.js"

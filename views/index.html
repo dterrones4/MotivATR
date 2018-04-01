@@ -10,34 +10,37 @@
 
 <header><h1 class='center'>MotivATR</h1></header>
 <body>
-	<form id='registrationForm' class='form center hidden'>
-		<input type ='text' id ='username' placeholder='Username' class='input' required>
-		<input type = 'text' id='phoneNumber' placeholder ='Phone Number' class='input' required>
-		<input type = 'text' id='email' placeholder ='Email' class='input' required>
-		<input type = 'password' id='password' placeholder ='Password' class='input' required>
-		<button class='btn'>Submit</button><br>
-		<a href="https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22CV92&redirect_uri=https%3A%2F%2Fmotivatr1.herokuapp.com%2Fapi%2Fuser%2Fhome&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800">Authorize FitBit</a>
-	</form>
-	<form id='loginForm' class='form center hidden'>
-			<input type = 'text' id='loginEmail' placeholder ='Email' class='input' required>
-			<input type = 'password' id='loginPassword' placeholder ='Password' class='input' required>
-			<button class='btn'>Submit</button><br>
-	</form>
-
-	<div class = 'sidenav col-4'>
-		<button id='login' class='btn'>Login</button><br>
-		<button id='register' class='btn'>Sign Up</button><br>
-		<button id = 'barGraph' class='btn'>Graphs</button>
+	<div id='introSection' class='center row'>
+		<div id='introContent' class='col-4'>
+		  <h2 id='introTitle'>Helping You Stay Motivated to Reach All Your Fitness Goals</h2>
+		  <p id='introText'>The MotivATR app allows you and a partner to remain accountable for
+			all your fitness goals regardless of how far apart you are. A fitbit account is currently
+			required to use the app.
+		  </p>
+		  <p>Make a new account below to get started!</p>
+		  <form id='registrationForm' class='form center'>
+			<input type = 'text' id='email' placeholder ='Email' class='input' required>
+			<input type = 'text' id='phoneNumber' placeholder ='Phone Number' class='input' required>
+			<input type = 'password' id='password' placeholder ='Password' class='input' required>
+			<button class='btn'>Get Started</button>
+		  </form>
+		  <form id='loginForm' class='form center hidden'>
+				<input type = 'text' id='loginEmail' placeholder ='Email' class='input' required>
+				<input type = 'password' id='loginPassword' placeholder ='Password' class='input' required>
+				<button class='btn'>Login</button><br>
+		</form>
+		<p class='loginHere'>Already have an account? <a id='login' href='#'>Login</a></p>
+		</div>
 	</div>
-	<div id ='graphs' class ='col-8 hidden'>
-		<canvas id="barChart"></canvas>
-		<canvas id="doughnutChart"></canvas>
+	<div id='instructions' class='row center'>
+		<div class='col-4'>STEP1</div>
+		<div class='col-4'>STEP2</div>
+		<div class='col-4'>STEP3</div>
 	</div>
 	<script
 	src="https://code.jquery.com/jquery-3.2.1.min.js"
 	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 	crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script src="app.js"></script>
 </body>
 

@@ -21,6 +21,11 @@ body {
     height: 100vh;
 }
 
+body, html{
+    margin:0;
+    padding:0;
+  }
+
 h1{
     font-size:40px;
     font-family: 'Montserrat', sans-serif;
@@ -115,13 +120,14 @@ h1{
       }
   }
 
-#myChart{
-
+#graphs{
+    height: 500px;
 }
+
 
 .sidenav {
     height: 100%;
-    width: 100%; /* Set the width of the sidebar */
+    width: 100%;
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
     left: 0;
@@ -130,8 +136,30 @@ h1{
     padding-top: 20px;
     margin-bottom: 20px;
     padding-bottom: 20px;
+    padding-left: 10px; 
 }
 
 canvas{
     border: solid black 1px;
+}
+
+#introSection{
+    background-size: 100% 100%;
+    background-image: url('http://www.stagemilk.com/wp-content/uploads/2017/01/fitness-for-actors.jpg');
+}
+
+.loginHere{
+    color:white;
+}
+
+.loginHere a{
+    color: rgb(126, 178, 255); 
+}
+
+.almostThere{
+    height: 700px;
+}
+
+a{
+    color:blue;
 }

@@ -114,10 +114,37 @@ router.get('/user/home', function(req, res, next){
     return res.sendFile('home.html', {root: './views'});
 });
 
-router.post('user/home', function(req, res, next){
-    //find user by ID and then take AUTH tokens to retrieve FitBit Data
+router.post('/user/home', function(req, res, next){
+    let body ='';
+
+    UserAccount.findById(req.body.id)
+    .then(function(user){
+        const options = {
+            hostname: 'api.fitbit.com',
+            method: 'GET',
+            path: `/1/user/${user.fb_id}/activities/date/today.json`,
+            headers: {"Authorization": `Bearer ${user.fb_auth_token}`,
+            "Content-Type": "application/x-www-form-urlencoded"}
+        }
+        const request = https.request(options, (response) => {
+
+            response.on('data', (chunk) => {
+                body += chunk;
+            });
+
+            response.on('end' , () => {
+                body = (JSON.parse(body));
+                return res.json(body);
+            });
+
+            response.on('error', (err) => {
+                console.log("Error:" + err.message);
+            });
+        });
+        request.end()
+    }).catch(err =>{reject(err);})
     //respond with user data to be displayed on front end.
-})
+});
 
 router.get('/user', /*auth.required,*/ function(req, res, next){
     UserAccount.findById(req.payload.id).then(function(user){
