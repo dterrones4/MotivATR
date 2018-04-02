@@ -1,34 +1,34 @@
 'use strict';
 
-const http = require('http');
-const path = require('path');
-const methods = require('methods');
-const bodyParser = require('body-parser');
-const passport = require('passport');
-const errorhandler = require('errorhandler');
-const session = require('express-session');
 const express = require('express');
+const bodyParser = require('body-parser');
+//const http = require('http');
+//const path = require('path');
+//const methods = require('methods');
+require('./config/passport');
+const passport = require('passport');
+//const errorhandler = require('errorhandler');
+//const session = require('express-session');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const {DATABASE_URL, PORT} = require('./config/index');
+const {DATABASE_URL, PORT} = require('./config');
+const {UserAccount} = require('./models')
 
 const app = express();
 
 app.use(morgan('common'));
-app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: true}));
 
-app.use(require('method-override')());
+
+//app.use(require('method-override')());
 app.use(express.static('public'));
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/views/index.html');
 })
-app.use(session({ secret: 'conduit', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false  }));
 
-require('./models');
-require('./config/passport');
 app.use(require('./routes'));
 
 // closeServer needs access to a server object, but that only

@@ -8,11 +8,11 @@ const secret = require('./config').secret;
 mongoose.Promise = global.Promise;
 
 const userSchema = new mongoose.Schema({
-    username: {type: String, unique: true, lowercase: true, required: [true, "can't be blank"], match: [/^[a-zA-ZA0-9]+$/, 'is invalid'], index: true},
     email: {type: String, unique: true, lowercase: true, required: [true, "can't be blank"], index: true},
     password: {type: String, require: true},
     phoneNumber: {type: String, unique: true, required: true},
     motivatrPhoneNumber: String,
+    goalTime: String,
     fb_auth_token: String,
     fb_refresh_token: String,
     fb_id: String,
@@ -40,7 +40,7 @@ userSchema.methods.generateJWT = function() {
 
     return jwt.sign({
         id: this._id,
-        username: this.username,
+        email: this.email,
         exp: parseInt(exp.getTime() / 1000),
     }, secret);
 };
@@ -48,7 +48,6 @@ userSchema.methods.generateJWT = function() {
 userSchema.methods.serialize = function(){
     return {
         id:this._id,
-        username: this.username,
         email: this.email,
         phoneNumber: this.phoneNumber,
         token: this.generateJWT()

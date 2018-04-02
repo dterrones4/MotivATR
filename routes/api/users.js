@@ -10,7 +10,6 @@ const querystring = require('querystring')
 router.post('/users', function(req, res, next){
     let user = new UserAccount();
 
-    user.username = req.body.username;
     user.email = req.body.email;
     user.phoneNumber = req.body.phoneNumber;
     user.setPassword(req.body.password);
@@ -43,7 +42,7 @@ router.post('/users/login', function(req, res, next){
 });
 
 router.get('/user/fitbitAuth', /*auth.required,*/ function(req, res, next){
-    //UserAccount.findById(req.payload.id).then(function(user){
+    //UserAccount.findById(req.body.id).then(function(user){
         //if(!user){return res.sendStatus(401);}
 
         return res.sendFile('fitbitAuth.html', {root: './views'});
@@ -147,7 +146,7 @@ router.post('/user/home', function(req, res, next){
 });
 
 router.get('/user', /*auth.required,*/ function(req, res, next){
-    UserAccount.findById(req.payload.id).then(function(user){
+    UserAccount.findById(req.body.id).then(function(user){
         if(!user){return res.sendStatus(401);}
 
         return res.json({user: user.serialize()})
@@ -155,24 +154,27 @@ router.get('/user', /*auth.required,*/ function(req, res, next){
 });
 
 router.put('/user', /*auth.required,*/ function(req, res, next){
-    UserAccount.findById(req.payload.id).then(function(user){
+    UserAccount.findById(req.body.id).then(function(user){
         if(!user){ return res.sendStatus(401); }
 
         //only update filedfs that were actually passed
-        if(typeof req.body.user.username !== 'undefined'){
-            user.username = req.body.user.username;
+        if(typeof req.body.username !== 'undefined'){
+            user.username = req.body.username;
         }
-        if(typeof req.body.user.email !== 'undefined'){
-            user.email = req.body.user.email;
+        if(typeof req.body.email !== 'undefined'){
+            user.email = req.body.email;
         }
-        if(typeof req.body.user.phoneNumber !== 'undefined'){
-            user.phoneNumber = req.body.user.phoneNumber;
+        if(typeof req.body.phoneNumber !== 'undefined'){
+            user.phoneNumber = req.body.phoneNumber;
         }
-        if(typeof req.body.user.password !== 'undefined'){
+        if(typeof req.body.password !== 'undefined'){
             user.setPassword(req.body.user.password);
         }
-        if(typeof req.body.user.motivatrPhoneNumber !== 'undefined'){
-            user.motivatrPhoneNumber = req.body.user.motivatrPhoneNumber;
+        if(typeof req.body.motivatrPhoneNumber !== 'undefined'){
+            user.motivatrPhoneNumber = req.body.motivatrPhoneNumber;
+        }
+        if(typeof req.body.goalTime !== 'undefined'){
+            user.goalTime = req.body.goalTime;
         }
         
         return user.save().then(function(){
