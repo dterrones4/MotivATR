@@ -77,6 +77,24 @@ h1{
     font-weight: bold; 
 }
 
+.navBtn{
+    display: block;
+    width: 100%; 
+    max-width: 400px;
+    margin: auto;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding: 20px;
+    -webkit-appearance: none;
+    outline: 0;
+    border: 0;
+    border-radius: 3px;
+    color: rgb(0, 0, 0);
+    transition: 0.3s;
+    font-size: 16px; 
+    font-weight: bold; 
+}
+
 @keyframes NO {
     from, to {
       -webkit-transform: translate3d(0, 0, 0);
@@ -121,9 +139,8 @@ h1{
   }
 
 #graphs{
-    height: 500px;
+    height: 400px;
 }
-
 
 .sidenav {
     height: 100%;
@@ -162,4 +179,10 @@ canvas{
 
 a{
     color:blue;
+}
+
+.content {
+    display: none;
+    overflow: hidden;
+    border: 3px solid black;
 }

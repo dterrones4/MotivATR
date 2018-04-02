@@ -5,6 +5,7 @@
 	<title>MotivATR</title>
 	<link rel="stylesheet" href="../../main.css" type='text/css' >
 	<link rel='stylesheet' href='../../float-grid.css' type='text/css'>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 </head>
 
 <header><h1 class='center'>MotivATR</h1></header>
@@ -13,11 +14,26 @@
 	<main role='main'>
 	  <div clas='row'>
 		<div class = 'sidenav col-4'>
-		  <button id = 'barGraph' class='btn'>View Todays Activity</button><br>
-		  <button id = 'heartRate' class='btn'>View Todays Heart Rate Breakdown</button><br>
-		  <button id = 'currentGoals' class='btn'>View Todays Goal Progress</button><br>
-		  <button id = '' class='btn'>Set Goal End Time</button><br>
-		  <button id = '' class='btn'>Sign Up MotivATR</button>
+		  <button id = 'barGraph' class='navBtn'>View Todays Activity</button>
+		  <button id = 'heartRate' class='navBtn'>View Todays Heart Rate Breakdown</button>
+		  <button id = 'currentGoals' class='navBtn'>View Todays Goal Progress</button>
+			<button id = 'setTime' class='navBtn collapsible'>Set Goal End Time</button>
+			<div class='content center'>
+				<p>Goals not met by this time will result in an "incomplete goals" text being sent to your MotivATR</p>
+				<p>Submiting a goal time will replace any previously set goal time</p>
+				<form id='goalTime'>
+					<input type='text' id='timePicker' class='center'><br>
+					<input type='submit' value'submit'>
+				</form><br>
+			</div>
+			<button id = 'setMotivatr' class='navBtn collapsible'>Sign Up MotivATR</button>
+			<div class='content center'>
+					<p>Enter phone number of person you would like to reveive goal completion & goal incomplete texts</p>
+					<form id='motivatrPhoneNum'>
+						<input type='text' placeholder='Motivatr Phone Number' id='motivatrPhoneNumber' class='center'><br>
+						<input type='submit' value'submit'>
+					</form><br>
+				</div>
 		  <div class = 'userGoals'>
 			<h3 class ='center'>Goals</h3>
 			<ul id='goalsList'>
@@ -33,7 +49,8 @@
 	src="https://code.jquery.com/jquery-3.2.1.min.js"
 	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script src="../../app.js"></script>
 </body>
 

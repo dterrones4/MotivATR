@@ -2,6 +2,9 @@ handleRegistrationSubmit();
 getUrlParams();
 handleLoginSubmit();
 listenForFitbitCalls();
+dropDowns();
+storeMotivatrPhoneNumber();
+storeGoalTime();
 
 const FITBIT_AUTH_URL = 'https://api.fitbit.com/oauth2/token';
 
@@ -22,7 +25,6 @@ $('#login').on('click', function(){
 function handleRegistrationSubmit(){
     $('#registrationForm').on('submit', function(event){
         event.preventDefault();
-        let username = document.getElementById("username").value;
         let phoneNumber = document.getElementById("phoneNumber").value;
         let email = document.getElementById("email").value;
         let password = document.getElementById("password").value;
@@ -54,6 +56,13 @@ function handleLoginSubmit(){
             if(res.redirect){
                 document.location.href = res.redirect;
             }
+                /*let data = {
+                    token: localStorage.getItem('token'),
+                    id: localStorage.getItem('id')
+                }    
+                $.get('api/user/fitbitAuth', data).done
+                document.location.href = res.redirect;
+            }*/
         }); 
     });
 }
@@ -150,7 +159,60 @@ function fitbitAuthRequest(obj){
         type: 'POST',
         data: request,
         headers: headers,
-    }).done(data => console.log(data));
+    });
+};
+
+function dropDowns(){
+    var coll = document.getElementsByClassName("collapsible");
+
+    for(let i = 0; i < coll.length; i++) {
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    }
+    $('#timePicker').timepicker();
+}
+
+function storeMotivatrPhoneNumber(){
+    $('#motivatrPhoneNum').on('submit', function(event){
+        event.preventDefault();
+        data = {
+            motivatrPhoneNumber: document.getElementById('motivatrPhoneNumber').value,
+            id: localStorage.getItem('id')
+        }
+        $.ajax({
+            url: '/api/user',
+            type: 'PUT',
+            data: data,
+        }).done(res =>{
+            console.log(res);
+        })
+    })
+}
+
+function storeGoalTime(){
+    $('#goalTime').on('submit', function(event){
+        event.preventDefault();
+        data = {
+            goalTime: document.getElementById('timePicker').value,
+            id: localStorage.getItem('id')
+        }
+        $.ajax({
+            url: '/api/user',
+            type: 'PUT',
+            data: data,
+        }).done(res =>{
+            console.log(res);
+        })
+    });
 };
 
 function listenForFitbitCalls(){
@@ -249,6 +311,7 @@ function getFitBitCurrentGoalsStatus(){
 function populateBarGraph(data){
     $('#graphs').removeClass('hidden');
     $('#graphContainer').remove();
+    $('#graphContainer2').remove();
     $('#graphs').append('<canvas id="graphContainer"></canvas>');
 
     var ctx = document.getElementById('graphContainer').getContext('2d');
@@ -277,6 +340,7 @@ function populateBarGraph(data){
 function populatePieGraph(data){
     $('#graphs').removeClass('hidden');
     $('#graphContainer').remove();
+    $('#graphContainer2').remove();
     $('#graphs').append('<canvas id="graphContainer"></canvas>');
 
     var ctx = document.getElementById('graphContainer').getContext('2d');
@@ -310,6 +374,7 @@ function populatePieGraph(data){
 function populateGoalsStatusGraph(goals, progress){
     $('#graphs').removeClass('hidden');
     $('#graphContainer').remove();
+    $('#graphContainer2').remove();
     $('#graphs').append('<canvas id="graphContainer"></canvas>');
 
     var ctx = document.getElementById('graphContainer').getContext('2d');
@@ -319,17 +384,17 @@ function populateGoalsStatusGraph(goals, progress){
         
         // The data for our dataset
         data: {
-            labels: ["Active Minutes", "Calories", "Distance", "Floors", 'Steps'],
+            labels: ["Calories", "Steps"],
             datasets: [
               {
-                label: ["Daily Goals"],
-                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9", "#c45850"],
-                data: [goals.activeMinutes, goals.calories, goals.distance, goals.floors, goals.steps]
+                label: ["Daily Goal"],
+                backgroundColor: ["#e8c3b9", "#c45850"],
+                data: [goals.calories, goals.steps]
               },
               {
                   label: ["Current Progress"],
                   backgroundColor: [],
-                  data: [progress.activeMinutes, progress.calories, progress.distance, progress.floors, progress.steps]
+                  data: [progress.calories, progress.steps]
               }
             ]
           },
@@ -338,13 +403,41 @@ function populateGoalsStatusGraph(goals, progress){
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: 'Current Goals Completion Status',
-            },
-            scales: {
-                xAxes: [{ stacked: true }],
-                yAxes: [{ stacked: true }]
+              text: 'Current Goals Completion Status(Steps & Calories)',
             }
           }
+    });
+
+    $('#graphs').append('<canvas id="graphContainer2"></canvas>');
+    var ctx2 = document.getElementById('graphContainer2').getContext('2d');
+    var chart = new Chart(ctx2, {
+        // The type of chart we want to create
+        type: 'horizontalBar',
+        
+        // The data for our dataset
+        data: {
+            labels: ["Active Minutes", "Distance", "Floors"],
+            datasets: [
+              {
+                label: ["Daily Goal"],
+                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9", "#c45850"],
+                data: [goals.activeMinutes, goals.distance, goals.floors]
+              },
+              {
+                  label: ["Current Progress"],
+                  backgroundColor: [],
+                  data: [progress.activeMinutes, progress.distance, progress.floors]
+              }
+            ]
+          },
+          options: {
+            responsive:true,
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: 'Current Goals Completion Status (Active Minutes, Distance & Floors)',
+            }
+        }
     });
 
 }
