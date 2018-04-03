@@ -29,7 +29,6 @@ function handleRegistrationSubmit(){
         let email = document.getElementById("email").value;
         let password = document.getElementById("password").value;
         const data = {
-            username: username,
             phoneNumber: phoneNumber,
             email: email,
             password: password
