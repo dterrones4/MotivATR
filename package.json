@@ -26,7 +26,7 @@
     "jsonwebtoken": "^8.2.0",
     "method-override": "^2.3.10",
     "methods": "^1.1.2",
-    "mocha": "^5.0.4",
+    "mocha": "^5.0.5",
     "mongo": "^0.1.0",
     "mongodb": "^3.0.5",
     "mongoose": "^5.0.12",

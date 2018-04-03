@@ -5,12 +5,13 @@ const chaiHttp = require('chai-http');
 const faker = require('faker');
 const mongoose = require('mongoose');
 
+const should = chai.should();
+const expect = chai.expect;
+
 const {UserAccount} = require('../models');
 const {closeServer, runServer, app} = require('../server');
-const {TEST_DATABASE_URL, PORT} = require('../config');
+const {TEST_DATABASE_URL} = require('../config');
 
-const should = chai.should;
-const expect = chai.expect;
 
 chai.use(chaiHttp);
 
@@ -27,16 +28,16 @@ function seedUserData() {
   console.info('seeding user data');
   const seedData = [];
 
-  for (let i = 1; i <= 10; i++) {
+  for(let i = 0; i < 10; i++) {
     seedData.push({
       email: faker.internet.email(),
       phoneNumber: faker.phone.phoneNumber(),
       password: faker.internet.password()
     });
-  }
+  };
   // this will return a promise
   return UserAccount.insertMany(seedData);
-}
+};
 
 
 describe('users API resource', function (){
@@ -46,6 +47,7 @@ describe('users API resource', function (){
   });
 
   beforeEach(function(){
+    this.timeout(10000);
     return seedUserData();
   });
   
@@ -69,11 +71,12 @@ describe('users API resource', function (){
       .post('/api/users')
       .send(newUser)
       .then(function(res){
-        //res.body.should.be.a('object');
+        const user = res.body.user;
+        user.should.be.a('object');
         res.should.be.json;
-        //res.body.should.include.keys('email', 'phoneNumber');
-        //res.body.email.shoud.equal(newUser.email);
-        //res.body.phoneNumber.shoud.equal(newUser.phoneNumber);
+        user.should.include.keys('email', 'phoneNumber');
+        user.email.should.equal(newUser.email);
+        user.phoneNumber.should.equal(newUser.phoneNumber);
       });
     });
   });
