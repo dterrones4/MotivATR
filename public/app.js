@@ -5,28 +5,30 @@ listenForFitbitCalls();
 dropDowns();
 storeMotivatrPhoneNumber();
 storeGoalTime();
-logout();
+eventListener();
 
 const FITBIT_AUTH_URL = 'https://api.fitbit.com/oauth2/token';
 
-$('.btn').on('click', function () {
-    $('.form').addClass('form--no');
-});
-
-$('#register').on('click', function(){
-    $('#registrationForm').removeClass('hidden');
-    $('#loginForm').addClass('hidden');
-});
-
-$('#login').on('click', function(){
-    $('#registrationForm').addClass('hidden');
-    $('#loginForm').removeClass('hidden');
-});
-
-$('#logout').on('click', function(){
-    localStorage.clear();
-    $.get('/');
-})
+function eventListent(){
+    $('.btn').on('click', function () {
+        $('.form').addClass('form--no');
+    });
+    
+    $('#register').on('click', function(){
+        $('#registrationForm').removeClass('hidden');
+        $('#loginForm').addClass('hidden');
+    });
+    
+    $('#login').on('click', function(){
+        $('#registrationForm').addClass('hidden');
+        $('#loginForm').removeClass('hidden');
+    });
+    
+    $('#logout').on('click', function(){
+        localStorage.clear();
+        $.get('/');
+    });
+}
 
 function handleRegistrationSubmit(){
     $('#registrationForm').on('submit', function(event){
