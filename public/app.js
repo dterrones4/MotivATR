@@ -9,7 +9,7 @@ eventListener();
 
 const FITBIT_AUTH_URL = 'https://api.fitbit.com/oauth2/token';
 
-function eventListent(){
+function eventListener(){
     $('.btn').on('click', function () {
         $('.form').addClass('form--no');
     });
