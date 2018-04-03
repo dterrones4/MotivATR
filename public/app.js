@@ -27,6 +27,7 @@ function eventListener(){
     $('#logout').on('click', function(){
         localStorage.clear();
         $.get('/');
+        document.location.href = '/';
     });
 }
 
