@@ -2,13 +2,13 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-//const http = require('http');
-//const path = require('path');
-//const methods = require('methods');
+const http = require('http');
+const path = require('path');
+const methods = require('methods');
 require('./config/passport');
 const passport = require('passport');
-//const errorhandler = require('errorhandler');
-//const session = require('express-session');
+const errorhandler = require('errorhandler');
+const session = require('express-session');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
