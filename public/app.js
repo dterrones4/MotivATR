@@ -147,7 +147,7 @@ function fitbitAuthRequest(obj){
     const request = {
         clientId: '22CV92',
         grant_type: 'authorization_code',
-        redirect_uri: 'localhost:8080/api/user/home',
+        redirect_uri: 'https://motivatr1.herokuapp.com/api/user/fitbitAuthToken',
         code: obj.code
     }
     const headers = {

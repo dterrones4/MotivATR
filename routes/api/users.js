@@ -168,7 +168,7 @@ router.put('/user', /*auth.required,*/ function(req, res, next){
             user.phoneNumber = req.body.phoneNumber;
         }
         if(typeof req.body.password !== 'undefined'){
-            user.setPassword(req.body.user.password);
+            user.setPassword(req.body.password);
         }
         if(typeof req.body.motivatrPhoneNumber !== 'undefined'){
             user.motivatrPhoneNumber = req.body.motivatrPhoneNumber;
