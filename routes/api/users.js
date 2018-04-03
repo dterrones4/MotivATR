@@ -63,7 +63,7 @@ router.post('/user/fitbitAuthToken', function (req, res, next){
     const query = querystring.stringify({
         clientId: '22CV92',
         grant_type: 'authorization_code',
-        redirect_uri: 'http://localhost:8080/api/user/fitbitAuthToken',
+        redirect_uri: 'https://motivatr1.herokuapp.com/api/user/fitbitAuthToken',
         code: code
     });
 
