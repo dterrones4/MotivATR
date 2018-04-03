@@ -5,6 +5,7 @@ listenForFitbitCalls();
 dropDowns();
 storeMotivatrPhoneNumber();
 storeGoalTime();
+logout();
 
 const FITBIT_AUTH_URL = 'https://api.fitbit.com/oauth2/token';
 
@@ -21,6 +22,11 @@ $('#login').on('click', function(){
     $('#registrationForm').addClass('hidden');
     $('#loginForm').removeClass('hidden');
 });
+
+$('#logout').on('click', function(){
+    localStorage.clear();
+    $.get('/');
+})
 
 function handleRegistrationSubmit(){
     $('#registrationForm').on('submit', function(event){
