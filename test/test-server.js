@@ -211,8 +211,6 @@ describe('users API resource', function (){
       });
     });
   });
-
-
 });
 
 
