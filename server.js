@@ -1,5 +1,6 @@
 'use strict';
 
+require('./config/passport');
 const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
@@ -7,7 +8,9 @@ const passport = require('passport');
 const errorhandler = require('errorhandler');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-require('./config/passport');
+const path = require('path');
+const methods = require('methods');
+const session = require('express-session');
 mongoose.Promise = global.Promise;
 
 const {DATABASE_URL, PORT} = require('./config');
@@ -17,7 +20,7 @@ const app = express();
 
 app.use(morgan('common'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.urlencoded({ extended: false}));
 
 
 app.use(require('method-override')());
