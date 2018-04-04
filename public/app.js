@@ -7,6 +7,45 @@ storeMotivatrPhoneNumber();
 storeGoalTime();
 eventListener();
 
+$().ready(function(){
+
+    $('#registrationForm').validate({
+        rules:{
+            password: {
+                required: true,
+                minlength: 6
+            },
+            confirm_password: {
+                required: true,
+                minlength: 6,
+                equalTo: '#password'
+            },
+            phoneNumber: {
+                minlength: 10
+            }
+        },
+        messages: {
+            password: {
+                required: 'Please provide a password',
+                minlenght: 'Your password must be at least 6 characters long'
+            },
+            confirm_password: {
+                required: 'Please provide a password',
+                minlength: 'Your password must be at least 6 chracters long',
+                equalTo: 'Your passwords do not match'
+            },
+            phoneNumber: {
+                minlength: 'Please include area-code (###-###-####)',
+                required: 'Please enter a phone number (###-###-####)'
+            },
+            email: {
+                email: 'Please enter a valid Email (yourname@email.com)',
+                required: 'Please enter a valid email'
+            }
+        }
+    });
+});
+
 const FITBIT_AUTH_URL = 'https://api.fitbit.com/oauth2/token';
 
 function eventListener(){
@@ -22,6 +61,24 @@ function eventListener(){
     $('#login').on('click', function(){
         $('#registrationForm').addClass('hidden');
         $('#loginForm').removeClass('hidden');
+        $('#loginForm').validate({
+            rules:{
+                password: {
+                    required: true,
+                    minlength: 6
+                }
+            },
+            messages: {
+                password: {
+                    required: 'Please provide a password',
+                    minlenght: 'Your password must be at least 6 characters long'
+                },
+                email: {
+                    email: 'Please enter a valid Email (yourname@email.com)',
+                    required: 'Please enter a valid email'
+                }
+            }
+        });
     });
     
     $('#logout').on('click', function(){
@@ -29,7 +86,7 @@ function eventListener(){
         $.get('/');
         document.location.href = '/';
     });
-}
+};
 
 function handleRegistrationSubmit(){
     $('#registrationForm').on('submit', function(event){
@@ -64,18 +121,16 @@ function handleLoginSubmit(){
             if(res.redirect){
                 document.location.href = res.redirect;
             }
-                /*let data = {
-                    token: localStorage.getItem('token'),
-                    id: localStorage.getItem('id')
-                }    
-                $.get('api/user/fitbitAuth', data).done
-                document.location.href = res.redirect;
-            }*/
-        }); 
+        });
+        setTimeout(function(){
+            $('#loginForm').append('<p class=\'error\'>Invalid Email or Password<p>');
+        }, 1000); 
     });
 }
 
 function newUserPostRequest(data){
+    //$('#registrationForm').addClass('hidden');
+    //$('#loginForm').removeClass('hidden');
     $.post("/api/users", data)
 }
 

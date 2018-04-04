@@ -33,17 +33,18 @@ h1{
 }
 
 .input{
-    display: block;
     width: 100%;
     padding: 20px;
+    margin-bottom: 10px;
     -webkit-appearance: none;
-    border: 0;
+    border: 1px solid lightgrey;
     outline: 0;
     transition: 0.3s;
     overflow: hidden;
 }
 
 .form{
+    padding: 10px; 
     margin-top: 40px;
     border-radius: 6px;
     overflow: hidden;
@@ -53,6 +54,7 @@ h1{
     width: 90%;
     max-width: 340px;
     margin: 10vh auto;
+    background-color: grey;
 }
 
 .form--no {
@@ -185,4 +187,9 @@ a{
     display: none;
     overflow: hidden;
     border: 3px solid black;
+}
+
+.error {
+    color: red;
+    margin-bottom: 5px;
 }
