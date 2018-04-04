@@ -107,18 +107,24 @@ function handleRegistrationSubmit(){
 }
 
 function newUserPostRequest(data){
+	$('.error').remove();
 	$.post("/api/users", data)
 		.done(res => {
 			$('#registrationForm').addClass('hidden');
 			$('#loginForm').removeClass('hidden');            
 	}).fail(err => {
-			console.log(err);
-			$('#registrationForm').append(`<p>${err.message}</p>`);
+			if(err.responseJSON.errors.phoneNumber){
+				$('#registrationForm').append(`<p class=\'error\'>Phone Number is already taken</p>`);
+			}
+			if(err.responseJSON.errors.email){
+				$('#registrationForm').append(`<p class=\'error\'>Email is already taken</p>`);
+			}
 	});
 };
 
 function handleLoginSubmit(){
 	$('#loginForm').on('submit', function(event){
+		$('.error').remove();
 		event.preventDefault();
 		const data = {
 			email: document.getElementById("loginEmail").value,
@@ -135,7 +141,7 @@ function handleLoginSubmit(){
 			}
 		})
 		.fail(err => {
-			console.log(err);
+			$('#registrationForm').remove('.error');
 			$('#loginForm').append('<p class=\'error\'>Invalid Email or Password<p>');
 		});
 	});

@@ -20,7 +20,7 @@ const app = express();
 
 app.use(morgan('common'));
 app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.urlencoded({ extended: true}));
 
 
 //app.use(require('method-override')());
