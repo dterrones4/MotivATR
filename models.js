@@ -9,7 +9,7 @@ mongoose.Promise = global.Promise;
 
 const userSchema = new mongoose.Schema({
     email: {type: String, unique: true, lowercase: true, required: [true, "can't be blank"], index: true},
-    password: {type: String, required: true},
+    password: {type: String},
     phoneNumber: {type: String, unique: true, required: true},
     motivatrPhoneNumber: String,
     goalTime: String,
