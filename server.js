@@ -3,14 +3,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
-const path = require('path');
-const methods = require('methods');
-require('./config/passport');
+//const path = require('path');
+//const methods = require('methods');
 const passport = require('passport');
 const errorhandler = require('errorhandler');
-const session = require('express-session');
+//const session = require('express-session');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+require('./config/passport');
 mongoose.Promise = global.Promise;
 
 const {DATABASE_URL, PORT} = require('./config');
@@ -20,10 +20,10 @@ const app = express();
 
 app.use(morgan('common'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true}));
+//app.use(bodyParser.urlencoded({ extended: true}));
 
 
-app.use(require('method-override')());
+//app.use(require('method-override')());
 app.use(express.static('public'));
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/views/index.html');

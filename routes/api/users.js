@@ -158,9 +158,6 @@ router.put('/user', /*auth.required,*/ function(req, res, next){
         if(!user){ return res.sendStatus(401); }
 
         //only update filedfs that were actually passed
-        if(typeof req.body.username !== 'undefined'){
-            user.username = req.body.username;
-        }
         if(typeof req.body.email !== 'undefined'){
             user.email = req.body.email;
         }
