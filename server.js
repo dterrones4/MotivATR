@@ -8,9 +8,6 @@ const passport = require('passport');
 const errorhandler = require('errorhandler');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const path = require('path');
-const methods = require('methods');
-const session = require('express-session');
 mongoose.Promise = global.Promise;
 
 const {DATABASE_URL, PORT} = require('./config');
