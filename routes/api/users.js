@@ -125,7 +125,7 @@ router.post('/user/home', function(req, res, next){
             headers: {"Authorization": `Bearer ${user.fb_auth_token}`,
             "Content-Type": "application/x-www-form-urlencoded"}
         }
-        const request = https.request(options, (response) => {
+        const request = https.request(options, (response, reject) => {
 
             response.on('data', (chunk) => {
                 body += chunk;
