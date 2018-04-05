@@ -30,9 +30,9 @@ Users can also sign up a MotivATR here and set a end time for when their goals s
 Built With
 ===============
 
-*Node.js
-*Express framework
-*Mongo DB
-*CI through Travis CI
-*Deployed with Heroku
+* Node.js
+* Express framework
+* Mongo DB
+* CI through Travis CI
+* Deployed with Heroku
 
