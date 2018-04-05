@@ -393,8 +393,8 @@ function populateBarGraph(data){
 	$('#graphContainer2').remove();
 	$('#graphs').append('<canvas id="graphContainer"></canvas>');
 
-	var ctx = document.getElementById('graphContainer').getContext('2d');
-	var chart = new Chart(ctx, {
+	let ctx = document.getElementById('graphContainer').getContext('2d');
+	let chart = new Chart(ctx, {
 		// The type of chart we want to create
 		type: 'bar',
 				
@@ -485,7 +485,7 @@ function populateGoalsStatusGraph(goals, progress){
 
 	$('#graphs').append('<canvas id="graphContainer2"></canvas>');
 	let ctx2 = document.getElementById('graphContainer2').getContext('2d');
-	let chart = new Chart(ctx2, {
+	let chart2 = new Chart(ctx2, {
 		// The type of chart we want to create
 		type: 'horizontalBar',
 				
