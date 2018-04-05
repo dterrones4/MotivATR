@@ -111,15 +111,16 @@ function newUserPostRequest(data){
 	.done(res => {
 		$('#registrationForm').addClass('hidden');
 		$('#loginForm').removeClass('hidden');            
-	}).fail(err => {
+	})
+	//.fail(err => {
 		//$('.error').remove();
-			if(err.responseJSON.errors.phoneNumber){
-				$('#registrationForm').append(`<p class=\'error\'>Phone Number is already taken</p>`);
-			}
-			if(err.responseJSON.errors.email){
-				$('#registrationForm').append(`<p class=\'error\'>Email is already taken</p>`);
-			}
-	});
+		//if(err.responseJSON.errors.phoneNumber){
+		//	$('#registrationForm').append(`<p class=\'error\'>Phone Number is already taken</p>`);
+		//}
+		//if(err.responseJSON.errors.email){
+			//$('#registrationForm').append(`<p class=\'error\'>Email is already taken</p>`);
+		//}
+	//});
 };
 
 function handleLoginSubmit(){
