@@ -2,6 +2,9 @@
 
 Link to Live App: https://motivatr1.herokuapp.com/
 
+App Overview
+============
+
 Motvatr allows user to be held accountable for fitness goals by texting a designated "MotivATR" when fitness goals
 are met or fitness goals are not completed by a designated time.
 Fitness progress is measured by fitbit data that is imported when a user signs into their fitbit account from the app.
@@ -24,5 +27,12 @@ Users can also sign up a MotivATR here and set a end time for when their goals s
 
 ![motivatr-inputs](https://user-images.githubusercontent.com/26045953/38386585-e6562426-38c9-11e8-83a3-4d598313b358.png)
 
+Built With
+===============
 
+*Node.js
+*Express framework
+*Mongo DB
+*CI through Travis CI
+*Deployed with Heroku
 
