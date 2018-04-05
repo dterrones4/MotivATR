@@ -112,8 +112,7 @@ function newUserPostRequest(data){
 		$('#registrationForm').addClass('hidden');
 		$('#loginForm').removeClass('hidden');            
 	}).fail(err => {
-		$('.error').remove();
-		console.log(err);
+		//$('.error').remove();
 			if(err.responseJSON.errors.phoneNumber){
 				$('#registrationForm').append(`<p class=\'error\'>Phone Number is already taken</p>`);
 			}
