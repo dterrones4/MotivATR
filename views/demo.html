@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>MotivATR</title>
+	<link rel="stylesheet" href="../../main.css" type='text/css' >
+	<link rel='stylesheet' href='../../float-grid.css' type='text/css'>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+</head>
+
+<header><h1 class='center'>MotivATR(Demo)</h1></header>
+<p class='center'>Welcome to the MotivATR demo! Click on any of the buttons
+	to view the app provided with mock data. The full version of the app would ask you
+	to give access to your fitbit account before reaching the dashboard. All info would then
+	be pulled directly from your Fitbit acount including your goals.
+</p>
+<body>
+	<a id='logout' href='#'>Logout</a>
+	<main role='main'>
+	  <div clas='row'>
+		<div class = 'sidenav col-4'>
+		  <button id = 'barGraph' class='navBtn'>View Todays Activity</button>
+		  <button id = 'heartRate' class='navBtn'>View Todays Heart Rate Breakdown</button>
+		  <button id = 'currentGoals' class='navBtn'>View Todays Goal Progress</button>
+			<button id = 'setTime' class='navBtn collapsible'>Set Goal End Time</button>
+			<div class='content center'>
+				<p>Goals not met by this time will result in an "incomplete goals" text being sent to your MotivATR</p>
+				<p>Submiting a goal time will replace any previously set goal time</p>
+				<form id='goalTime'>
+					<input type='text' id='timePicker' class='center'><br>
+					<input type='submit' value'submit'>
+				</form><br>
+			</div>
+			<button id = 'setMotivatr' class='navBtn collapsible'>Sign Up MotivATR</button>
+			<div class='content center'>
+					<p>Enter phone number of person you would like to reveive goal completion & goal incomplete texts</p>
+					<form id='motivatrPhoneNum'>
+						<input type='text' placeholder='Motivatr Phone Number' id='motivatrPhoneNumber' class='center'><br>
+						<input type='submit' value'submit'>
+					</form><br>
+				</div>
+		  <div class = 'userGoals'>
+			<h3 class ='center'>Goals</h3>
+			<ul id='goalsList'>
+			</ul>
+		  </div>
+		</div>
+		<div id ='graphs' class ='col-8 hidden'>
+		  <canvas id="graphContainer" class='hidden'></canvas>
+		</div>
+	  </div> 
+	</main>
+	<script
+	src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js'></script>
+<script src="../../demo.js"></script>
+</body>
+
+</html>

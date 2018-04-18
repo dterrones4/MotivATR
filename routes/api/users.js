@@ -108,9 +108,12 @@ router.get('/user/fitbitAuthToken', function(req, res, next){
     return res.sendFile('fitbitAuthToken.html', {root: './views'});
 });
 
-
 router.get('/user/home', function(req, res, next){
     return res.sendFile('home.html', {root: './views'});
+});
+
+router.get('/user/demo', function(req, res, next){
+    return res.sendFile('demo.html', {root: './views'});
 });
 
 router.post('/user/home', function(req, res, next){
@@ -157,7 +160,7 @@ router.put('/user', /*auth.required,*/ function(req, res, next){
     UserAccount.findById(req.body.id).then(function(user){
         if(!user){ return res.sendStatus(401); }
 
-        //only update filedfs that were actually passed
+        //only update fileds that were actually passed
         if(typeof req.body.email !== 'undefined'){
             user.email = req.body.email;
         }

@@ -131,20 +131,26 @@ function handleLoginSubmit(){
 			email: document.getElementById("loginEmail").value,
 			password: document.getElementById('loginPassword').value
 		}
-		$.post("/api/users/login", data).done(res => {
-			if(res.user.token){
-				localStorage.setItem('token', res.user.token);
-				localStorage.setItem('id', res.user.id);
-			}
-			//if response has a redirect object redirect to that page
-			if(res.redirect){
-				document.location.href = res.redirect;
-			}
-		})
-		.fail(err => {
-			$('#registrationForm').remove('.error');
-			$('#loginForm').append('<p class=\'error\'>Invalid Email or Password<p>');
-		});
+		if(data.email === 'demo@gmail.com'){
+			console.log('demo function ran')
+			document.location.href = '/api/user/demo';
+		}
+		else{
+			$.post("/api/users/login", data).done(res => {
+				if(res.user.token){
+					localStorage.setItem('token', res.user.token);
+					localStorage.setItem('id', res.user.id);
+				}
+				//if response has a redirect object redirect to that page
+				if(res.redirect){
+					document.location.href = res.redirect;
+				}
+			})
+			.fail(err => {
+				$('#registrationForm').remove('.error');
+				$('#loginForm').append('<p class=\'error\'>Invalid Email or Password<p>');
+			});
+		}
 	});
 }
 
@@ -261,6 +267,9 @@ function dropDowns(){
 
 function storeMotivatrPhoneNumber(){
 	$('#motivatrPhoneNum').on('submit', function(event){
+		const container = this.previousElementSibling;
+		container.style.display = "none";
+
 		event.preventDefault();
 		data = {
 			motivatrPhoneNumber: document.getElementById('motivatrPhoneNumber').value,
@@ -400,11 +409,11 @@ function populateBarGraph(data){
 				
 		// The data for our dataset
 		data:{
-			labels: ['elevation', 'floors', 'steps', 'calories'],
+			labels: ['steps', 'calories'],
 			datasets: [{
 				label: 'Todays Progress',
-				backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-				data: [data.elevation, data.floors, data.steps, data.calories]
+				backgroundColor: ["#3e95cd", "#8e5ea2"],
+				data: [data.steps, data.calories]
 			}]   
 		},
 				
@@ -412,6 +421,27 @@ function populateBarGraph(data){
 		options: {           
 			responsive:true,
 			maintainAspectRatio: false
+		}
+	});
+
+	$('#graphs').append('<canvas id="graphContainer2"></canvas>');
+	let ctx2 = document.getElementById('graphContainer2').getContext('2d');
+	let chart2 = new Chart(ctx2, {
+		// The type of chart we want to create
+		type: 'bar',
+				
+		// The data for our dataset
+		data: {
+			labels: ["Active Minutes", "Distance(Km)", "Floors"],
+			datasets: [{
+				label: ["Todays Progress"],
+				backgroundColor: ["#3cba9f","#e8c3b9", "#c45850"],
+				data: [data.activeMinutes, data.distance, data.floors]
+			}]
+			},
+		options: {
+			responsive:true,
+			maintainAspectRatio: false,
 		}
 	});
 };
